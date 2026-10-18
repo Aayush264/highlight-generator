@@ -8,6 +8,12 @@ Upload footage from a party, trip, college fest or wedding. The app finds the be
 
 Built for the Hacktoberfest Open-Source AI Challenge, Week 2: Side Hustle.
 
+## Demo / How to Use
+
+Watch the demo to see Highlight Generator in action.
+
+[Download the Highlight Generator Demo]([PASTE_YOUR_VIDEO_LINK_HERE](https://github.com/Aayush264/highlight-generator/releases/download/demo-v1/demo.video.mp4)
+
 ## How it works
 
 1. **Find.** FFmpeg and some simple maths score every second of the video by loudness and motion, then pick the strongest 6-second moments.
