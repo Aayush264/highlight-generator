@@ -1,0 +1,7 @@
+node_modules/
+uploads/
+outputs/
+music/*.mp3
+music/*.wav
+music/custom/
+.env

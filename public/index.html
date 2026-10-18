@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Highlight Generator</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%233f74e8'/%3E%3Cpath d='M15 11l15 9-15 9z' fill='%23ffb454'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+  <div class="app" id="top">
+
+    <nav class="topbar">
+      <a class="brand" href="#top" aria-label="Highlight Generator, back to top">
+        <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="10" fill="#3f74e8"/>
+          <path d="M15 11l15 9-15 9z" fill="#ffb454"/>
+          <rect x="7" y="11" width="4" height="4" rx="1" fill="#fff" opacity=".85"/>
+          <rect x="7" y="18" width="4" height="4" rx="1" fill="#fff" opacity=".85"/>
+          <rect x="7" y="25" width="4" height="4" rx="1" fill="#fff" opacity=".85"/>
+        </svg>
+        <span>Highlight Generator</span>
+      </a>
+    </nav>
+
+    <header class="hero">
+      <h1>Turn a long video into a short highlight reel</h1>
+      <p class="subtitle">
+        Upload footage from any event. The app finds the best moments, a local AI
+        model reviews them, and your reel is cut and mixed with music, all on your
+        own computer.
+      </p>
+      <div class="hero-actions">
+        <a class="start-link" href="#step1">Get started</a>
+        <ul class="hero-points">
+          <li>Private: your footage never leaves this computer</li>
+          <li>Free: open-source AI, no cost per video</li>
+          <li>For parties, trips, fests, weddings and more</li>
+        </ul>
+      </div>
+    </header>
+
+    <div class="layout">
+
+      <!-- STEP LIST -->
+      <aside class="sidebar">
+        <ol class="step-nav">
+          <li><a class="nav-step" href="#step1" data-step="1"><span class="nav-num">1</span><span class="nav-text"><strong>Upload video</strong><small></small></span></a></li>
+          <li><a class="nav-step" href="#step2" data-step="2"><span class="nav-num">2</span><span class="nav-text"><strong>Find highlights</strong><small></small></span></a></li>
+          <li><a class="nav-step" href="#step3" data-step="3"><span class="nav-num">3</span><span class="nav-text"><strong>AI review</strong><small></small></span></a></li>
+          <li><a class="nav-step" href="#step4" data-step="4"><span class="nav-num">4</span><span class="nav-text"><strong>AI director</strong><small></small></span></a></li>
+          <li><a class="nav-step" href="#step5" data-step="5"><span class="nav-num">5</span><span class="nav-text"><strong>Music &amp; sound</strong><small></small></span></a></li>
+          <li><a class="nav-step" href="#step6" data-step="6"><span class="nav-num">6</span><span class="nav-text"><strong>Export reel</strong><small></small></span></a></li>
+        </ol>
+      </aside>
+
+      <main class="steps">
+
+        <!-- 1. UPLOAD -->
+        <section class="step" id="step1" data-step="1">
+          <div class="step-head">
+            <span class="step-num">1</span>
+            <h2>Upload video</h2>
+            <span class="step-status"></span>
+          </div>
+          <p class="lock-note" hidden></p>
+
+          <input type="file" id="videoInput" accept="video/*">
+          <button id="uploadButton">Upload video</button>
+
+          <div id="resultCard" hidden>
+            <pre id="result"></pre>
+          </div>
+        </section>
+
+        <!-- 2. FIND HIGHLIGHTS -->
+        <section class="step" id="step2" data-step="2">
+          <div class="step-head">
+            <span class="step-num">2</span>
+            <h2>Find highlights</h2>
+            <span class="step-status"></span>
+          </div>
+          <p class="lock-note" hidden></p>
+
+          <div class="control-row">
+            <label for="reelLength">Reel length</label>
+            <select id="reelLength">
+              <option value="30">About 30 seconds</option>
+              <option value="60" selected>About 60 seconds</option>
+              <option value="90">About 90 seconds</option>
+            </select>
+          </div>
+
+          <div class="control-row">
+            <label for="balance">
+              What counts more?
+              <span class="balance-value" id="balanceValue">50% loudness / 50% action</span>
+            </label>
+            <input type="range" id="balance" min="0" max="100" value="50">
+            <div class="range-labels">
+              <span>🎞️ More action</span>
+              <span>🔊 More loudness</span>
+            </div>
+          </div>
+
+          <button class="action-button" id="highlightButton">✨ Find highlights</button>
+          <button class="secondary-button" id="smartButton">🧠 Smart pick: let the AI choose the best moments</button>
+          <p class="hint" id="smartHint">
+            Smart pick takes longer. The AI looks at about twice as many moments as
+            the reel needs and keeps the ones it rates highest.
+          </p>
+
+          <div id="playerCard" hidden>
+            <h3>Preview</h3>
+            <video id="player" controls></video>
+          </div>
+
+          <p class="hint" id="emptyMoments">Your highlight moments will appear here.</p>
+
+          <div id="highlightsCard" hidden>
+            <h3>Highlights</h3>
+            <p class="hint" id="reelSummary"></p>
+            <button class="action-button" id="playReelButton">▶ Play highlight reel</button>
+            <ul class="segment-list" id="highlightsList"></ul>
+            <p class="hint">
+              Click any moment to play just that one. Effects, transitions and music
+              only appear in the exported MP4, not in this preview.
+            </p>
+          </div>
+        </section>
+
+        <!-- 3. AI REVIEW -->
+        <section class="step" id="step3" data-step="3">
+          <div class="step-head">
+            <span class="step-num">3</span>
+            <h2>AI review</h2>
+            <span class="step-status"></span>
+          </div>
+          <p class="lock-note" hidden></p>
+
+          <p class="hint">
+            The AI looks at one frame from each moment and writes a short caption and
+            an excitement score. Not needed after Smart pick, which already does this.
+          </p>
+          <button class="secondary-button" id="reviewButton">🤖 Ask AI to review these moments</button>
+          <p class="hint" id="reviewHint"></p>
+        </section>
+
+        <!-- 4. AI DIRECTOR -->
+        <section class="step" id="step4" data-step="4">
+          <div class="step-head">
+            <span class="step-num">4</span>
+            <h2>AI director</h2>
+            <span class="step-status"></span>
+          </div>
+          <p class="lock-note" hidden></p>
+
+          <p class="hint">
+            The AI picks effects and transitions for each moment, and suggests the
+            music mood and sound mode. It only chooses from a fixed menu.
+          </p>
+          <button class="secondary-button" id="directButton">🎬 Let the AI direct effects, transitions &amp; music</button>
+          <p class="hint" id="directorHint"></p>
+        </section>
+
+        <!-- 5. MUSIC AND SOUND -->
+        <section class="step" id="step5" data-step="5">
+          <div class="step-head">
+            <span class="step-num">5</span>
+            <h2>🎵 Music &amp; sound</h2>
+            <span class="step-status"></span>
+          </div>
+          <p class="lock-note" hidden></p>
+
+          <p class="ai-suggestion" id="audioSuggestion" hidden></p>
+
+          <div class="control-row">
+            <label>How should the reel sound?</label>
+
+            <div class="mode-options">
+              <label class="mode-option">
+                <input type="radio" name="audioMode" value="music_original" checked>
+                <span>
+                  <strong>🎵🔊 Music + original sound</strong>
+                  <small>Music on top, with the real sound of the event quietly underneath</small>
+                </span>
+              </label>
+
+              <label class="mode-option">
+                <input type="radio" name="audioMode" value="music_only">
+                <span>
+                  <strong>🎵 Music only</strong>
+                  <small>Best when the moments are people talking, since cut-up speech sounds messy</small>
+                </span>
+              </label>
+
+              <label class="mode-option">
+                <input type="radio" name="audioMode" value="original_only">
+                <span>
+                  <strong>🔊 Original sound only</strong>
+                  <small>Just what was recorded, with the volume of every moment evened out</small>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="control-row" id="musicRow">
+            <label for="musicSelect">Music track</label>
+            <select id="musicSelect"></select>
+            <audio id="musicPreview" controls></audio>
+          </div>
+
+          <div class="control-row" id="levelRow">
+            <label for="originalLevel">
+              Original sound level
+              <span class="balance-value" id="originalLevelValue"></span>
+            </label>
+            <input type="range" id="originalLevel" min="0" max="100" value="50">
+            <div class="range-labels">
+              <span>Quiet background</span>
+              <span>As loud as the music</span>
+            </div>
+          </div>
+
+          <div class="control-row" id="uploadRow">
+            <label for="trackInput">Use your own music</label>
+            <input type="file" id="trackInput" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac">
+            <button class="secondary-button" id="uploadTrackButton">⬆ Upload track</button>
+            <p class="hint">
+              Only upload music you have the right to use. The built-in tracks were
+              composed by this app, so they are free to use in reels you share or sell.
+            </p>
+          </div>
+        </section>
+
+        <!-- 6. EXPORT -->
+        <section class="step" id="step6" data-step="6">
+          <div class="step-head">
+            <span class="step-num">6</span>
+            <h2>Export reel</h2>
+            <span class="step-status"></span>
+          </div>
+          <p class="lock-note" hidden></p>
+
+          <button class="action-button" id="exportButton">💾 Export reel as MP4</button>
+
+          <div id="reelCard" hidden>
+            <h3>Your highlight reel</h3>
+            <video id="reelPlayer" controls></video>
+            <a class="download-link" id="downloadLink" download>⬇ Download reel (MP4)</a>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
